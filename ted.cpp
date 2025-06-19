@@ -1,7 +1,6 @@
 using namespace std;
 
-#include <queue>
-#include <list>
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -12,9 +11,9 @@ class Node
 public:
     int index;
     string nome;
-    vector<Node *> children;
-    Node *pai;
-    Node *mais_esq;
+    vector<Node*> children;
+    Node* pai;
+    Node* mais_esq;
 
     Node(string nome)
     {
@@ -28,10 +27,9 @@ public:
 class Tree
 {
 private:
-    Node *root;
-    int tam;
+    Node* root;
 
-    void posOrdemRec(Node *no, int *i)
+    void posOrdemRec(Node* no, int* i)
     {
         if (no != nullptr)
         {
@@ -44,7 +42,7 @@ private:
         }
     }
 
-    void tamanhoRecursivo(Node *no, int *i)
+    void tamanhoRecursivo(Node* no, int* i)
     {
         if (no != nullptr)
         {
@@ -61,7 +59,7 @@ private:
         stringstream stream(s);
         string temp;
 
-        stack<Node *> pilha;
+        stack<Node*> pilha;
 
         while (stream >> temp)
         {
@@ -74,7 +72,7 @@ private:
             }
             else
             {
-                Node *novo = new Node(temp);
+                Node* novo = new Node(temp);
 
                 if (root == nullptr)
                 {
@@ -82,7 +80,7 @@ private:
                 }
                 else if (!pilha.empty())
                 {
-                    Node *pai = pilha.top();
+                    Node* pai = pilha.top();
                     novo->pai = pai;
                     pai->children.push_back(novo);
                 }
@@ -92,7 +90,7 @@ private:
         }
     }
 
-    void ordena_nome_rec(Node *no)
+    void ordena_nome_rec(Node* no)
     {
         if (no != nullptr)
         {
@@ -104,7 +102,7 @@ private:
         }
     }
 
-    void mais_esq_rec(Node *no)
+    void mais_esq_rec(Node* no)
     {
         if (no == nullptr)
             return;
@@ -124,11 +122,11 @@ private:
         mais_esq_rec(root);
     }
 
-    void l_rec(Node *no)
+    void l_rec(Node* no)
     {
         for (int i = 0; i < no->children.size(); i++)
         {
-            l_rec(no->children.at(i));
+            l_rec(no->children[i]);
         }
         l.push_back(no->mais_esq->index);
     }
@@ -143,16 +141,15 @@ public:
     void indexar()
     {
         int categoria = 1;
-        int *i = &categoria;
-        tam = tamanhoFloresta(root);
+        int* i = &categoria;
 
         posOrdemRec(root, i);
     }
 
-    int tamanhoFloresta(Node *raiz)
+    int tamanhoFloresta(Node* raiz)
     {
         int tamanho = 0;
-        int *i = &tamanho;
+        int* i = &tamanho;
 
         tamanhoRecursivo(raiz, i);
         return tamanho;
@@ -178,7 +175,7 @@ public:
             {
                 if (l.at(i) == l.at(j))
                 {
-                    flag == 1;
+                    flag = 1;
                 }
             }
             if (flag == 0)
@@ -194,43 +191,53 @@ public:
     }
 };
 
-int treedist(vector<int> l1, vector<int> l2, int i, int j, Tree *t1, Tree *t2, int **TD)
+vector<vector<int>> TD;
+
+int treedist(vector<int> l1, vector<int> l2, const int i, const int j, Tree* t1, Tree* t2)
 {
-    int forestdist[i + 1][j + 1];
+    vector<vector<int>> forestdist;
+
+    forestdist.resize(i + 1, vector<int>(j + 1));
 
     int del = 1, insert = 1, rename = 1;
 
     forestdist[0][0] = 0;
 
-    for (int i1 = l1.at(i - 1); i1 <= i; i1++)
+    for (int i1 = l1[i - 1]; i1 <= i; i1++)
     {
         forestdist[i1][0] = forestdist[i1 - 1][0] + del;
     }
-    for (int j1 = l2.at(j - 1); j1 <= j; j1++)
+    for (int j1 = l2[j - 1]; j1 <= j; j1++)
     {
         forestdist[0][j1] = forestdist[0][j1 - 1] + insert;
     }
-    for (int i1 = l1.at(i - 1); i1 <= i; i1++)
+
+    for (int i1 = l1[i - 1]; i1 <= i; i1++)
     {
-        for (int j1 = l2.at(j - 1); j1 <= j; j1++)
+        for (int j1 = l2[j - 1]; j1 <= j; j1++)
         {
-            int i_temp = (l1.at(i - 1) > i1 - 1) ? 0 : i1 - 1;
-            int j_temp = (l2.at(j - 1) > j1 - 1) ? 0 : j1 - 1;
-            if ((l1.at(i1 - 1) == l1.at(i - 1)) && (l2.at(j1 - 1) == l2.at(j - 1)))
+
+            int i_temp = (l1[i - 1] > i1 - 1) ? 0 : i1 - 1;
+            int j_temp = (l2[j - 1] > j1 - 1) ? 0 : j1 - 1;
+
+            if ((l1[i1 - 1] == l1[i - 1]) && (l2[j1 - 1] == l2[j - 1]))
             {
-                int custo = (t1->nomes.at(i1 - 1) == t2->nomes.at(j1 - 1)) ? 0 : rename;
+
+                int custo = (t1->nomes[i1 - 1] == t2->nomes[j1 - 1]) ? 0 : rename;
+
                 forestdist[i1][j1] = min(
                     min(forestdist[i_temp][j1] + del, forestdist[i1][j_temp] + insert),
                     forestdist[i_temp][j_temp] + custo);
                 TD[i1][j1] = forestdist[i1][j1];
+
             }
             else
             {
-                int i1_temp = l1.at(i1 - 1) - 1;
-                int j1_temp = l2.at(j1 - 1) - 1;
+                int i1_temp = l1[i1 - 1] - 1;
+                int j1_temp = l2[j1 - 1] - 1;
 
-                int i_temp2 = (l1.at(i - 1) > i1_temp) ? 0 : i1_temp;
-                int j_temp2 = (l2.at(j - 1) > j1_temp) ? 0 : j1_temp;
+                int i_temp2 = (l1[i - 1] > i1_temp) ? 0 : i1_temp;
+                int j_temp2 = (l2[j - 1] > j1_temp) ? 0 : j1_temp;
 
                 forestdist[i1][j1] = min(
                     min(forestdist[i_temp][j1] + del, forestdist[i1][j_temp] + insert),
@@ -239,10 +246,11 @@ int treedist(vector<int> l1, vector<int> l2, int i, int j, Tree *t1, Tree *t2, i
         }
     }
 
+
     return forestdist[i][j];
 }
 
-int TED(Tree *t1, Tree *t2)
+int TED(Tree* t1, Tree* t2)
 {
     t1->indexar();
     t1->pegar_l();
@@ -260,42 +268,28 @@ int TED(Tree *t1, Tree *t2)
     vector<int> l2 = t2->l;
     vector<int> lrkr2 = t2->lr_keyroots;
 
-    int **TD = (int **)malloc(l1.size() + 1 * sizeof(int *));
-    for (int i = 0; i < l1.size() + 1; i++)
-    {
-        TD[i] = (int *)malloc(l2.size() + 1 * sizeof(int));
-    }
 
-    int it, jt;
-    for (int i = 0; i < lrkr1.size(); i++)
+
+    TD.resize(l1.size() + 1, vector<int>(l2.size() + 1));
+
+
+    for (int i : lrkr1)
     {
-        for (int j = 0; j < lrkr2.size(); j++)
+        for (int j : lrkr2)
         {
-            it = lrkr1.at(i - 1);
-            jt = lrkr2.at(j - 1);
-            TD[i][j] = treedist(l1, l2, i, j, t1, t2, TD);
+            TD[i][j] = treedist(l1, l2, i, j, t1, t2);
+            cout << i << " " << j << " " << TD[i][j] << endl;
         }
     }
 
-    int resp = TD[l1.size()][l2.size()];
 
-    for (int i = 0; i < l1.size() + 1; i++)
-    {
-        free(TD[i]);
-        TD[i] = nullptr;
-    }
-
-    free(TD);
-
-    TD = nullptr;
-
-    return resp;
+    return TD[l1.size()][l2.size()];
 }
 
 int main()
 {
-    Tree *t1 = new Tree("A B C ) D ) ) E ) F G H ) I ) ) J ) ) K ) )");
-    Tree *t2 = new Tree("A B C ) D ) ) E ) F ) G H ) I ) J ) K ) ) )");
+    Tree* t1 = new Tree("A B ) C ) D E ) ) F ) )");
+    Tree* t2 = new Tree("C A ) D E ) ) F B ) ) )");
 
     int dist = TED(t1, t2);
     cout << "Distância: " << dist;

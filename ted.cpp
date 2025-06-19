@@ -42,17 +42,6 @@ private:
         }
     }
 
-    void tamanhoRecursivo(Node* no, int* i)
-    {
-        if (no != nullptr)
-        {
-            for (int c = 0; c < no->children.size(); c++)
-            {
-                posOrdemRec(no->children.at(c), i);
-            }
-            *i = *i + 1;
-        }
-    }
 
     void criar_com_string(string s)
     {
@@ -144,15 +133,6 @@ public:
         int* i = &categoria;
 
         posOrdemRec(root, i);
-    }
-
-    int tamanhoFloresta(Node* raiz)
-    {
-        int tamanho = 0;
-        int* i = &tamanho;
-
-        tamanhoRecursivo(raiz, i);
-        return tamanho;
     }
 
     void ordena_nomes()

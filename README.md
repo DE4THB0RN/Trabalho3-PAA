@@ -1,2 +1,9 @@
-# Algoritmo de Zhang and Shasha (1989)
-## Distância de edição entre árvores
+# Trabalho 3 de Projeto e Análise de Algoritmos
+### Integrantes:
+* Pedro Augusto de Paula Ferreira dos Santos Souza
+* Arthur Leite Setragni
+* Gustavo Garcia Macedo
+* Igor Silva de Paiva Paschoalino
+* Rafael Vilela Padilha Clark
+* Guilherme Henrique Vieira Nascimento
+

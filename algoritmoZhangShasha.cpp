@@ -11,9 +11,9 @@ class Node
 public:
     int index;
     string nome;
-    vector<Node *> children;
-    Node *pai;
-    Node *mais_esq;
+    vector<Node*> children;
+    Node* pai;
+    Node* mais_esq;
 
     Node(string nome)
     {
@@ -27,9 +27,9 @@ public:
 class Tree
 {
 private:
-    Node *root;
+    Node* root;
 
-    void posOrdemRec(Node *no, int *i)
+    void posOrdemRec(Node* no, int* i)
     {
         if (no != nullptr)
         {
@@ -47,7 +47,7 @@ private:
         stringstream stream(s);
         string temp;
 
-        stack<Node *> pilha;
+        stack<Node*> pilha;
 
         while (stream >> temp)
         {
@@ -60,7 +60,7 @@ private:
             }
             else
             {
-                Node *novo = new Node(temp);
+                Node* novo = new Node(temp);
 
                 if (root == nullptr)
                 {
@@ -68,7 +68,7 @@ private:
                 }
                 else if (!pilha.empty())
                 {
-                    Node *pai = pilha.top();
+                    Node* pai = pilha.top();
                     novo->pai = pai;
                     pai->children.push_back(novo);
                 }
@@ -78,7 +78,7 @@ private:
         }
     }
 
-    void ordena_nome_rec(Node *no)
+    void ordena_nome_rec(Node* no)
     {
         if (no != nullptr)
         {
@@ -90,7 +90,7 @@ private:
         }
     }
 
-    void mais_esq_rec(Node *no)
+    void mais_esq_rec(Node* no)
     {
         if (no == nullptr)
             return;
@@ -110,7 +110,7 @@ private:
         mais_esq_rec(root);
     }
 
-    void l_rec(Node *no)
+    void l_rec(Node* no)
     {
         for (int i = 0; i < no->children.size(); i++)
         {
@@ -129,7 +129,7 @@ public:
     void indexar()
     {
         int categoria = 1;
-        int *i = &categoria;
+        int* i = &categoria;
 
         posOrdemRec(root, i);
     }
@@ -172,7 +172,7 @@ public:
 
 vector<vector<int>> TD;
 
-int treedist(vector<int> l1, vector<int> l2, const int i, const int j, Tree *t1, Tree *t2)
+int treedist(vector<int> l1, vector<int> l2, const int i, const int j, Tree* t1, Tree* t2)
 {
     vector<vector<int>> forestdist;
 
@@ -227,7 +227,7 @@ int treedist(vector<int> l1, vector<int> l2, const int i, const int j, Tree *t1,
     return forestdist[i][j];
 }
 
-int TED(Tree *t1, Tree *t2)
+int TED(Tree* t1, Tree* t2)
 {
     t1->indexar();
     t1->pegar_l();
@@ -261,13 +261,13 @@ int TED(Tree *t1, Tree *t2)
 
 int main()
 {
-    Tree *casoBase = new Tree("A B E K ) L ) ) F M ) ) ) C G ) H ) ) D I ) J P ) ) ) )");
+    Tree* casoBase = new Tree("A B E K ) L ) ) F M ) ) ) C G ) H ) ) D I ) J P ) ) ) )");
 
-    Tree *arvoreFina1 = new Tree("A B C D E F G H I J K L M N O P ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )");
-    Tree *arvoreFina2 = new Tree("Z Y X W V U T S R Q P O N M L K J I ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )");
-    Tree *arvoreLarga1 = new Tree("A B ) C ) D ) E ) F ) G ) H ) I ) J ) K ) L ) M ) N ) O ) P ) Q ) )");
-    Tree *arvoreLarga2 = new Tree("A B E ) F ) G ) H ) I ) ) C J ) K ) L ) M ) N ) ) D O ) P ) Q ) R ) S ) ) )");
-    Tree *arvoreMedia1 = new Tree("R S W A ) B ) ) X ) ) T Y C ) D E ) ) ) ) U Z ) ) V F G ) H I ) ) ) ) )");
+    Tree* arvoreFina1 = new Tree("A B C D E F G H I J K L M N O P ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )");
+    Tree* arvoreFina2 = new Tree("Z Y X W V U T S R Q P O N M L K J I ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )");
+    Tree* arvoreLarga1 = new Tree("A B ) C ) D ) E ) F ) G ) H ) I ) J ) K ) L ) M ) N ) O ) P ) Q ) )");
+    Tree* arvoreLarga2 = new Tree("A B E ) F ) G ) H ) I ) ) C J ) K ) L ) M ) N ) ) D O ) P ) Q ) R ) S ) ) )");
+    Tree* arvoreMedia1 = new Tree("R S W A ) B ) ) X ) ) T Y C ) D E ) ) ) ) U Z ) ) V F G ) H I ) ) ) ) )");
 
     auto start_fina1 = chrono::high_resolution_clock::now();
     int dist = TED(casoBase, arvoreMedia1);
@@ -277,5 +277,5 @@ int main()
     cout << "--- Arvore Testes ---" << endl;
     cout << "Distancia: " << dist << endl;
     cout << "Tempo de execucao: " << duration_fina1.count() << " ms" << endl
-         << endl;
+        << endl;
 }
